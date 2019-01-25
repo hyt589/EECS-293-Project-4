@@ -4,6 +4,8 @@ public final class Connector extends AbstractToken {
 
     private TerminalSymbol type;
 
+    private static Cache<TerminalSymbol, Connector> cache;
+
     private Connector(TerminalSymbol type) {
         this.type = type;
     }
@@ -28,10 +30,25 @@ public final class Connector extends AbstractToken {
             throw new IllegalArgumentException("Illegal connector");
         }
 
-        return new Connector(type);
+        return cache.get(type, Connector::new);
     }
 
-    public boolean equals(Connector connector) {
-        return type.equals(connector.getType());
+    @Override
+    public String toString() {
+        switch (this.type) {
+            case PLUS:
+                return "+";
+            case MINUS:
+                return "-";
+            case TIMES:
+                return "*";
+            case DIVIDE:
+                return "/";
+            case OPEN:
+                return "(";
+            default:
+                return ")";
+        }
+
     }
 }
