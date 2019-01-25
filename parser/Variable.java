@@ -1,6 +1,6 @@
 package parser;
 
-public final class Variable extends AbstractToken implements Token {
+public final class Variable extends AbstractToken {
 
     private TerminalSymbol type = TerminalSymbol.VARIABLE;
 
