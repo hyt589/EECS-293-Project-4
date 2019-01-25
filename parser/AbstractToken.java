@@ -1,6 +1,6 @@
 package parser;
 
-public abstract class AbstractToken {
+public abstract class AbstractToken implements Token {
 
     private TerminalSymbol type;
 
