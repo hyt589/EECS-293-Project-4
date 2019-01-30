@@ -4,25 +4,34 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 
-class Cache<T, V> {
+final class Cache<T, V> {
 
-    private Map<T, V> cache = Collections.emptyMap();
+    private Map<T, V> cache;
 
-    //The description on the assignment doc is really confusing on this one. Be sure to check back later.
-    V get(T key, Function<? super T, ? extends V> constructor) {
-        if (key.equals(null) || constructor.equals(null)) {
-            throw new NullPointerException("Key or constructor is null");
-        }
-
-        if (cache.containsKey(key)) {
-            return cache.get(key);
-        }
-
-        V value = constructor.apply(key);
-        cache.put(key, value);
-
-        return value;
+    Cache(){
+        cache = Collections.emptyMap();
     }
 
+    //This getter is only for testing purposes
+    Map<T, V> getCache(){
+        return cache;
+    }
+
+    V get(T key, Function<? super T, ? extends V> constructor) {
+        if (key == null) {
+            throw new NullPointerException("Key is null");
+        }
+        else if (constructor == null){
+            throw new NullPointerException("Constructor is null");
+        }
+        else if (cache.containsKey(key)) {
+            return cache.get(key);
+        }
+        else {
+            V value = constructor.apply(key);
+            cache.put(key, value);
+            return value;
+        }
+    }
 
 }

@@ -3,34 +3,54 @@ package parser;
 public final class Connector extends AbstractToken {
 
     private TerminalSymbol type;
-
-    private static Cache<TerminalSymbol, Connector> cache;
+    private static Cache<TerminalSymbol, Connector> cache = new Cache<>();
 
     private Connector(TerminalSymbol type) {
         this.type = type;
     }
 
-    @Override
     public TerminalSymbol getType() {
         return type;
     }
 
-    public static final Connector build(TerminalSymbol type) throws NullPointerException, IllegalArgumentException {
-
-        if (type.equals(null)) {
-            throw new NullPointerException("Type is null");
+    public static final Connector build(String representation) throws NullPointerException, IllegalArgumentException {
+        if (representation == null) {
+            throw new NullPointerException("Connector type is null");
         }
-
-        if (!(type.equals(TerminalSymbol.PLUS) ||
-                type.equals(TerminalSymbol.MINUS) ||
-                type.equals(TerminalSymbol.TIMES) ||
-                type.equals(TerminalSymbol.DIVIDE) ||
-                type.equals(TerminalSymbol.OPEN) ||
-                type.equals(TerminalSymbol.CLOSE))) {
-            throw new IllegalArgumentException("Illegal connector");
+        else if (legalType(representation)){
+            return cache.get(typeFromString(representation), Connector::new);
         }
+        else {
+            throw new IllegalArgumentException("Illegal connector type");
+        }
+    }
 
-        return cache.get(type, Connector::new);
+    private static boolean legalType(String representation){
+        return (representation.equals('+') ||
+                representation.equals('-') ||
+                representation.equals('*') ||
+                representation.equals('/') ||
+                representation.equals('(') ||
+                representation.equals(')'));
+    }
+
+    private static TerminalSymbol typeFromString(String representation){
+        switch (representation){
+            case "+":
+                return TerminalSymbol.PLUS;
+            case "-":
+                return TerminalSymbol.MINUS;
+            case "*":
+                return TerminalSymbol.TIMES;
+            case "/":
+                return TerminalSymbol.DIVIDE;
+            case "(":
+                return TerminalSymbol.OPEN;
+            case ")":
+                return TerminalSymbol.CLOSE;
+            default:
+                throw(new IllegalArgumentException("Illegal representation"));
+        }
     }
 
     @Override
@@ -46,8 +66,10 @@ public final class Connector extends AbstractToken {
                 return "/";
             case OPEN:
                 return "(";
-            default:
+            case CLOSE:
                 return ")";
+            default:
+                throw(new IllegalArgumentException("Illegal type"));
         }
 
     }
