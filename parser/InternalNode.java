@@ -6,30 +6,41 @@ import java.util.List;
 public final class InternalNode implements Node{
 
     private final List<Node> children;
+    private List<Token> representationList = null;
+    private String representationString = null;
 
     public List<Node> getChildren(){
-        return new ArrayList<Node>(children);
+        return new ArrayList<>(children);
     }
 
-    //TODO make this.children unmodifiable copies
     private InternalNode(List<Node> children){
-        this.children = children;
+        this.children = new ArrayList<>(children);
     }
 
-    //TODO handle null pointers
     public static final InternalNode build(List<Node> children) {
-        return new InternalNode(children);
+        if (children == null){
+            throw(new NullPointerException("Null children"));
+        }
+        else {
+            return new InternalNode(children);
+        }
     }
 
-    //TODO do this method
     public final List<Token> toList(){
-        return new ArrayList<Token>();
-
+        if (representationList == null){
+            representationList = new ArrayList<>();
+            representationList.addAll(children.get(0).toList());
+            representationList.addAll(children.get(1).toList());
+        }
+        return representationList;
     }
 
-    //TODO write the toString
     @Override
     public String toString(){
-        return "";
+        if (representationString == null){
+            representationString = "[" + children.get(0).toString() + "," + children.get(1).toString() + "]";
+        }
+        return representationString;
     }
+
 }

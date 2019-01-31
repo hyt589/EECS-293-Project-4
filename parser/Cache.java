@@ -1,6 +1,6 @@
 package parser;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -9,7 +9,7 @@ final class Cache<T, V> {
     private Map<T, V> cache;
 
     Cache(){
-        cache = Collections.emptyMap();
+        cache = new HashMap<>();
     }
 
     //This getter is only for testing purposes

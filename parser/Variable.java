@@ -23,7 +23,7 @@ public final class Variable extends AbstractToken {
             return cache.get(representation, Variable::new);
         }
         else{
-            throw(new NullPointerException("Null representation string"));
+            throw new NullPointerException("Null representation string");
         }
     }
 
@@ -31,4 +31,5 @@ public final class Variable extends AbstractToken {
     public String toString() {
         return representation;
     }
+
 }

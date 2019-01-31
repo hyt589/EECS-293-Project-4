@@ -13,7 +13,7 @@ public final class Connector extends AbstractToken {
         return type;
     }
 
-    public static final Connector build(String representation) throws NullPointerException, IllegalArgumentException {
+    public static final Connector build(String representation) {
         if (representation == null) {
             throw new NullPointerException("Connector type is null");
         }
@@ -26,12 +26,9 @@ public final class Connector extends AbstractToken {
     }
 
     private static boolean legalType(String representation){
-        return (representation.equals('+') ||
-                representation.equals('-') ||
-                representation.equals('*') ||
-                representation.equals('/') ||
-                representation.equals('(') ||
-                representation.equals(')'));
+        return (representation.equals("+") || representation.equals("-") ||
+                representation.equals("*") || representation.equals("/") ||
+                representation.equals("(") || representation.equals(")"));
     }
 
     private static TerminalSymbol typeFromString(String representation){
@@ -49,7 +46,7 @@ public final class Connector extends AbstractToken {
             case ")":
                 return TerminalSymbol.CLOSE;
             default:
-                throw(new IllegalArgumentException("Illegal representation"));
+                throw new IllegalArgumentException("Illegal representation");
         }
     }
 
@@ -69,8 +66,8 @@ public final class Connector extends AbstractToken {
             case CLOSE:
                 return ")";
             default:
-                throw(new IllegalArgumentException("Illegal type"));
+                throw new IllegalArgumentException("Illegal type");
         }
-
     }
+
 }
