@@ -13,8 +13,8 @@ final class Cache<T, V> {
     }
 
     //This getter is only for testing purposes
-    Map<T, V> getCache(){
-        return cache;
+    Map<T, V> getMap(){
+        return new HashMap<>(cache);
     }
 
     V get(T key, Function<? super T, ? extends V> constructor) {
