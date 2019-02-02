@@ -25,9 +25,9 @@ public final class LeafNode implements Node {
     }
 
     public final List<Token> toList() {
-        ArrayList<Token> token_list = new ArrayList<>();
-        token_list.add(token);
-        return token_list;
+        ArrayList<Token> tokenList = new ArrayList<>();
+        tokenList.add(token);
+        return tokenList;
     }
 
     @Override

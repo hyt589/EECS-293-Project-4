@@ -1,5 +1,7 @@
 package parser;
 
+import java.util.function.Function;
+
 public final class Variable extends AbstractToken {
 
     private TerminalSymbol type = TerminalSymbol.VARIABLE;
@@ -19,8 +21,10 @@ public final class Variable extends AbstractToken {
     }
 
     public static final Variable build(String representation) {
+        Function<? super String, ? extends Variable> variableConstructor = (Void) -> new Variable(representation);
+
         if(representation != null) {
-            return cache.get(representation, Variable::new);
+            return cache.get(representation, variableConstructor);
         }
         else{
             throw new NullPointerException("Null representation string");
