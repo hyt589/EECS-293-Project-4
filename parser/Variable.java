@@ -1,10 +1,10 @@
 package parser;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public final class Variable extends AbstractToken {
 
-    private TerminalSymbol type = TerminalSymbol.VARIABLE;
     private final String representation;
     private static Cache<String, Variable> cache = new Cache<>();
 
@@ -12,8 +12,9 @@ public final class Variable extends AbstractToken {
         this.representation = representation;
     }
 
+    @Override
     public final TerminalSymbol getType() {
-        return this.type;
+        return TerminalSymbol.VARIABLE;
     }
 
     public final String getRepresentation() {
@@ -22,13 +23,7 @@ public final class Variable extends AbstractToken {
 
     public static final Variable build(String representation) {
         Function<? super String, ? extends Variable> variableConstructor = (Void) -> new Variable(representation);
-
-        if(representation != null) {
-            return cache.get(representation, variableConstructor);
-        }
-        else{
-            throw new NullPointerException("Null representation string");
-        }
+        return cache.get(Objects.requireNonNull(representation, "Representation string cannot be null"), variableConstructor);
     }
 
     @Override

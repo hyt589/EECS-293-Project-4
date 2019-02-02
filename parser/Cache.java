@@ -2,6 +2,7 @@ package parser;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 final class Cache<T, V> {
@@ -18,13 +19,9 @@ final class Cache<T, V> {
     }
 
     V get(T key, Function<? super T, ? extends V> constructor) {
-        if (key == null) {
-            throw new NullPointerException("Key is null");
-        }
-        else if (constructor == null){
-            throw new NullPointerException("Constructor is null");
-        }
-        else if (cache.containsKey(key)) {
+        Objects.requireNonNull(key, "Key cannot be null");
+        Objects.requireNonNull(constructor, "Constructor cannot be null");
+        if (cache.containsKey(key)) {
             return cache.get(key);
         }
         else {

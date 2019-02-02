@@ -1,73 +1,44 @@
 package parser;
 
+import java.util.*;
+import java.util.function.Function;
+
 public final class Connector extends AbstractToken {
 
     private TerminalSymbol type;
     private static Cache<TerminalSymbol, Connector> cache = new Cache<>();
+    private static Map<TerminalSymbol, String> typeMap = new HashMap<>();
+    static {
+        typeMap.put(TerminalSymbol.PLUS, "+");
+        typeMap.put(TerminalSymbol.MINUS, "-");
+        typeMap.put(TerminalSymbol.TIMES, "*");
+        typeMap.put(TerminalSymbol.DIVIDE, "/");
+        typeMap.put(TerminalSymbol.OPEN, "(");
+        typeMap.put(TerminalSymbol.CLOSE, ")");
+    }
 
     private Connector(TerminalSymbol type) {
         this.type = type;
     }
 
+    @Override
     public TerminalSymbol getType() {
-        return type;
+        return this.type;
     }
 
-    public static final Connector build(String representation) {
-        if (representation == null) {
-            throw new NullPointerException("Connector type is null");
-        }
-        else if (legalType(representation)){
-            return cache.get(typeFromString(representation), Connector::new);
+    public static final Connector build(TerminalSymbol connectorType) {
+        if (typeMap.containsKey(Objects.requireNonNull(connectorType,"Connector type cannot be null"))){
+            Function<? super TerminalSymbol, ? extends Connector> connectorConstructor = (Void) -> new Connector(connectorType);
+            return cache.get(connectorType, connectorConstructor);
         }
         else {
             throw new IllegalArgumentException("Illegal connector type");
         }
     }
 
-    private static boolean legalType(String representation){
-        return (representation.equals("+") || representation.equals("-") ||
-                representation.equals("*") || representation.equals("/") ||
-                representation.equals("(") || representation.equals(")"));
-    }
-
-    private static TerminalSymbol typeFromString(String representation){
-        switch (representation){
-            case "+":
-                return TerminalSymbol.PLUS;
-            case "-":
-                return TerminalSymbol.MINUS;
-            case "*":
-                return TerminalSymbol.TIMES;
-            case "/":
-                return TerminalSymbol.DIVIDE;
-            case "(":
-                return TerminalSymbol.OPEN;
-            case ")":
-                return TerminalSymbol.CLOSE;
-            default:
-                throw new IllegalArgumentException("Illegal representation");
-        }
-    }
-
     @Override
     public String toString() {
-        switch (this.type) {
-            case PLUS:
-                return "+";
-            case MINUS:
-                return "-";
-            case TIMES:
-                return "*";
-            case DIVIDE:
-                return "/";
-            case OPEN:
-                return "(";
-            case CLOSE:
-                return ")";
-            default:
-                throw new IllegalArgumentException("Illegal type");
-        }
+        return typeMap.get(this.type);
     }
 
 }

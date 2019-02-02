@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class LeafNode implements Node {
 
@@ -16,14 +17,10 @@ public final class LeafNode implements Node {
     }
 
     public static final LeafNode build(Token token) {
-        if(token == null){
-            throw(new NullPointerException("Token is null"));
-        }
-        else {
-            return new LeafNode(token);
-        }
+        return new LeafNode(Objects.requireNonNull(token, "Token cannot be null"));
     }
 
+    @Override
     public final List<Token> toList() {
         ArrayList<Token> tokenList = new ArrayList<>();
         tokenList.add(token);

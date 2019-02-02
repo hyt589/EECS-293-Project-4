@@ -2,6 +2,7 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class InternalNode implements Node{
 
@@ -18,19 +19,16 @@ public final class InternalNode implements Node{
     }
 
     public static final InternalNode build(List<Node> children) {
-        if (children == null){
-            throw(new NullPointerException("Null children"));
-        }
-        else {
-            return new InternalNode(children);
-        }
+        return new InternalNode(Objects.requireNonNull(children, "Children cannot be null"));
     }
 
+    @Override
     public final List<Token> toList(){
         if (representationList == null){
             representationList = new ArrayList<>();
-            representationList.addAll(children.get(0).toList());
-            representationList.addAll(children.get(1).toList());
+            for (Node child : children) {
+                representationList.addAll(child.toList());
+            }
         }
         return representationList;
     }
@@ -38,7 +36,16 @@ public final class InternalNode implements Node{
     @Override
     public String toString(){
         if (representationString == null){
-            representationString = "[" + children.get(0).toString() + "," + children.get(1).toString() + "]";
+            representationString = "[";
+            for (int i = 0; i < children.size(); i++){
+                if (i < children.size() -1) {
+                    representationString += children.get(i).toString() + ",";
+                }
+                else{
+                    representationString += children.get(i).toString();
+                }
+            }
+            representationString += "]";
         }
         return representationString;
     }
