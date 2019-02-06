@@ -39,7 +39,7 @@ public enum NonTerminalSymbol implements Symbol {
 
     
 
-    private static final Optional<Node> parseInput(List<Token> input) {
+    static final Optional<Node> parseInput(List<Token> input) {
         Objects.requireNonNull(input, "Input token list should not be null");
         for (SymbolSequence production :
                 productionTable.get(EXPRESSION)) {
