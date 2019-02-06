@@ -13,14 +13,9 @@ final class Cache<T, V> {
         cache = new HashMap<>();
     }
 
-    //This getter is only for testing purposes
-    Map<T, V> getMap(){
-        return new HashMap<>(cache);
-    }
-
     V get(T key, Function<? super T, ? extends V> constructor) {
-        Objects.requireNonNull(key, "Key cannot be null");
-        Objects.requireNonNull(constructor, "Constructor cannot be null");
+        Objects.requireNonNull(key, "Key cannot be null!");
+        Objects.requireNonNull(constructor, "Constructor cannot be null!");
         if (cache.containsKey(key)) {
             return cache.get(key);
         }

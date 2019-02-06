@@ -34,8 +34,8 @@ final class ParseState {
     }
 
     public static final ParseState build(Node node, List<Token> remainderList){
-        Objects.requireNonNull(node, "Node cannot be null");
-        Objects.requireNonNull(remainderList, "Remainder list cannot be null");
+        Objects.requireNonNull(node, "Node cannot be null!");
+        Objects.requireNonNull(remainderList, "Remainder list cannot be null!");
         return new ParseState(true, node, remainderList);
     }
 

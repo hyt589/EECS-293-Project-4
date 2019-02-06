@@ -19,7 +19,7 @@ public final class InternalNode implements Node{
     }
 
     public static final InternalNode build(List<Node> children) {
-        return new InternalNode(Objects.requireNonNull(children, "Children cannot be null"));
+        return new InternalNode(Objects.requireNonNull(children, "Children cannot be null!"));
     }
 
     @Override

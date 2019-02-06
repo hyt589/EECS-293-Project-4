@@ -17,7 +17,7 @@ public final class LeafNode implements Node {
     }
 
     public static final LeafNode build(Token token) {
-        return new LeafNode(Objects.requireNonNull(token, "Token cannot be null"));
+        return new LeafNode(Objects.requireNonNull(token, "Token cannot be null!"));
     }
 
     @Override
