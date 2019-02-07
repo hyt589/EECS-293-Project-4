@@ -1,4 +1,4 @@
-# EECS-293-Project-2
+# EECS-293-Project-3
 
 These files require no special instructors for compiling.
 
