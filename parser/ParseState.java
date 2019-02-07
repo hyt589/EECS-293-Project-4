@@ -26,11 +26,11 @@ final class ParseState {
     }
 
     List<Token> getRemainder(){
-        return new ArrayList<Token>(remainder);
+        return new ArrayList<>(remainder);
     }
 
     final boolean hasNoRemainder(){
-        return remainder == null;
+        return remainder.isEmpty();
     }
 
     public static final ParseState build(Node node, List<Token> remainderList){
