@@ -20,7 +20,11 @@ final class Cache<T, V> {
             return cache.get(key);
         }
         else {
-            V value = constructor.apply(key);
+            //Constructors are defined as Function<? super String, ? extends Variable> variableConstructor =
+            //(Void) -> new Variable(representation);
+            //So I don't know why this doesn't work: V value = constructor.apply(Void);
+            //V value = constructor.apply(key);
+            V value = cache.computeIfAbsent(key, constructor);
             cache.put(key, value);
             return value;
         }
