@@ -8,10 +8,7 @@ import java.util.Objects;
 class SymbolSequence {
 
     private final List<Symbol> production;
-    static final SymbolSequence EPSILON;
-    static{
-        EPSILON = new SymbolSequence(new ArrayList<>());
-    }
+    static final SymbolSequence EPSILON = new SymbolSequence(new ArrayList<>());
 
     private SymbolSequence(List<Symbol> symbolList){
         production = symbolList;
@@ -33,7 +30,7 @@ class SymbolSequence {
         List<Node> children = new ArrayList<>();
         for (Symbol symbol : production){
             ParseState parsedRemainderFromSymbol = symbol.parse(remainder);
-            if (parsedRemainderFromSymbol.equals(ParseState.FAILURE)){
+            if (!parsedRemainderFromSymbol.isASuccess()){
                 return ParseState.FAILURE;
             }
             else{
@@ -48,4 +45,5 @@ class SymbolSequence {
     public String toString(){
         return production.toString();
     }
+
 }

@@ -17,7 +17,7 @@ final class ParseState {
         this.remainder = remainder;
     }
 
-    boolean getSuccess(){
+    boolean isASuccess(){
         return success;
     }
 

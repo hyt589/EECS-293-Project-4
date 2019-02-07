@@ -24,8 +24,8 @@ final class Cache<T, V> {
             //(Void) -> new Variable(representation);
             //So I don't know why this doesn't work: V value = constructor.apply(Void);
             //V value = constructor.apply(key);
+            //cache.put(key, value);
             V value = cache.computeIfAbsent(key, constructor);
-            cache.put(key, value);
             return value;
         }
     }
