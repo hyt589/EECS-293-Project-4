@@ -55,13 +55,19 @@ public enum NonTerminalSymbol implements Symbol {
     }
 
     static final Optional<Node> parseInput(List<Token> input) {
+        Optional<Node> returnedNode;
         Objects.requireNonNull(input, "Input token list cannot be null!");
         ParseState parseState = EXPRESSION.parse(input);
 
         if (parseState.isASuccess() && parseState.hasNoRemainder()) {
-                return Optional.of(parseState.getNode());
-            }
-        return Optional.empty();
+            returnedNode = Optional.of(parseState.getNode());
+        }
+        else{
+            returnedNode = Optional.empty();
+        }
+        return returnedNode;
     }
+
+
 
 }

@@ -9,11 +9,13 @@ public enum TerminalSymbol implements Symbol {
     @Override
     public ParseState parse(List<Token> input){
         Objects.requireNonNull(input, "Input token list cannot be null!");
+        ParseState returnState;
         if (!input.isEmpty() && input.get(0).matches(this)){
-            return ParseState.build(LeafNode.build(input.get(0)), input.subList(1, input.size()));
+            returnState = ParseState.build(LeafNode.build(input.get(0)), input.subList(1, input.size()));
         }
         else {
-            return ParseState.FAILURE;
+            returnState = ParseState.FAILURE;
         }
+        return returnState;
     }
 }

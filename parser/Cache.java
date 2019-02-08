@@ -14,14 +14,17 @@ final class Cache<T, V> {
     }
 
     V get(T key, Function<? super T, ? extends V> constructor) {
+        V value;
         Objects.requireNonNull(key, "Key cannot be null!");
         Objects.requireNonNull(constructor, "Constructor cannot be null!");
+
         if (cache.containsKey(key)) {
-            return cache.get(key);
+            value = cache.get(key);
         }
         else {
-            return cache.computeIfAbsent(key, constructor);
+            value = cache.computeIfAbsent(key, constructor);
         }
+        return value;
     }
 
 }
