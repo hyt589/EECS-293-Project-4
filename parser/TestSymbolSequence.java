@@ -36,13 +36,13 @@ public class TestSymbolSequence {
         tokenList.add(connectorClose);
 
         ParseState testState1 = testSequence1.match(tokenList);
-        assertTrue(testState1.isASuccess());
+        assertTrue(testState1.isSuccess());
         assertTrue(testState1.hasNoRemainder());
         assertEquals(testState1.getRemainder(), new ArrayList<>());
         assertEquals(testState1.getNode().toString(), "[(,x,y,)]");
 
         ParseState testState2 = testSequence2.match(tokenList);
-        assertTrue(testState2.isASuccess());
+        assertTrue(testState2.isSuccess());
         assertTrue(testState2.hasNoRemainder());
         assertEquals(testState2.getRemainder(), new ArrayList<>());
         assertEquals(testState2.getNode().toString(), "[(,x,y,)]");

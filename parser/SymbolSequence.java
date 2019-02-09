@@ -30,7 +30,7 @@ class SymbolSequence {
         List<Node> children = new ArrayList<>();
         for (Symbol symbol : production){
             ParseState parsedRemainderFromSymbol = symbol.parse(remainder);
-            if (parsedRemainderFromSymbol.isASuccess()){
+            if (parsedRemainderFromSymbol.isSuccess()){
                 children.add(parsedRemainderFromSymbol.getNode());
                 remainder = parsedRemainderFromSymbol.getRemainder();
             }

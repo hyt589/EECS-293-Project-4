@@ -47,7 +47,7 @@ public enum NonTerminalSymbol implements Symbol {
 
         for (SymbolSequence production : productionList) {
             ParseState returnedState = production.match(input);
-            if (returnedState.isASuccess()) {
+            if (returnedState.isSuccess()) {
                 return returnedState;
             }
         }
@@ -59,7 +59,7 @@ public enum NonTerminalSymbol implements Symbol {
         Objects.requireNonNull(input, "Input token list cannot be null!");
         ParseState parseState = EXPRESSION.parse(input);
 
-        if (parseState.isASuccess() && parseState.hasNoRemainder()) {
+        if (parseState.isSuccess() && parseState.hasNoRemainder()) {
             returnedNode = Optional.of(parseState.getNode());
         }
         else{

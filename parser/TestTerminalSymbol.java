@@ -21,7 +21,7 @@ public class TestTerminalSymbol {
         List<Token> tokenList2 = new ArrayList<>(tokenList.subList(1, tokenList.size()));
 
         ParseState testState1 = ParseState.build(leafVarA, tokenList2);
-        assertTrue(testState1.isASuccess());
+        assertTrue(testState1.isSuccess());
         assertEquals(testState1.getNode(), leafVarA);
         assertFalse(testState1.hasNoRemainder());
         assertEquals(testState1.getRemainder(), tokenList2);

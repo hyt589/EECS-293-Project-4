@@ -20,7 +20,7 @@ public class TestParseState {
         LeafNode leafVarX = LeafNode.build(variableX);
 
         ParseState testState1 = ParseState.build(leafVarX, tokenList);
-        assertTrue(testState1.isASuccess());
+        assertTrue(testState1.isSuccess());
         assertEquals(testState1.getNode(), leafVarX);
         assertFalse(testState1.hasNoRemainder());
         assertEquals(testState1.getRemainder(), tokenList);
