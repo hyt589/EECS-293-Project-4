@@ -1,6 +1,7 @@
 package parser;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class InternalNode implements Node{
 
@@ -56,6 +57,40 @@ public final class InternalNode implements Node{
             representationString += "]";
         }
         return representationString;
+    }
+
+    public static class Builder{
+
+        private List<Node> children = new ArrayList<>();
+
+        public boolean addChild(Node node){
+            return this.children.add(node);
+        }
+
+        public Builder simplify(){
+            this.children = this.children.stream()
+                    .filter(child -> child.isFruitful())
+                    .map(child -> simplifyChildren(child))
+                    .collect(Collectors.toList());
+            return this;
+        }
+
+        private Node simplifyChildren(Node child){
+            Builder childBuilder = new Builder();
+            boolean isInternalNode = child.getChildren() != null;
+            if(isInternalNode){
+                childBuilder.children = child.getChildren();
+                childBuilder = childBuilder.simplify();
+                if(childBuilder.children.size() == 1){
+                    child = childBuilder.children.get(0);
+                }
+            }
+            return child;
+        }
+
+        public InternalNode build(){
+            return InternalNode.build(this.simplify().children);
+        }
     }
 
 }

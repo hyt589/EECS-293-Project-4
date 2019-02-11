@@ -24,18 +24,18 @@ class SymbolSequence {
     ParseState match(List<Token> input){
         Objects.requireNonNull(input, "Input token list cannot be null!");
         List<Token> remainder = new ArrayList<>(input);
-        List<Node> children = new ArrayList<>();
+        InternalNode.Builder childBuilder = new InternalNode.Builder();
         for (Symbol symbol : production){
             ParseState parsedRemainderFromSymbol = symbol.parse(remainder);
             if (parsedRemainderFromSymbol.isSuccess()){
-                children.add(parsedRemainderFromSymbol.getNode());
+                childBuilder.addChild(parsedRemainderFromSymbol.getNode());
                 remainder = parsedRemainderFromSymbol.getRemainder();
             }
             else{
                 return ParseState.FAILURE;
             }
         }
-        return ParseState.build(InternalNode.build(children), remainder);
+        return ParseState.build(childBuilder.build(), remainder);
     }
 
     @Override
