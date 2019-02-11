@@ -1,7 +1,7 @@
 package parser;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.*;
 
 public final class Connector extends AbstractToken {
 

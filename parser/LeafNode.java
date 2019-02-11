@@ -1,8 +1,6 @@
 package parser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class LeafNode implements Node {
 
@@ -25,6 +23,16 @@ public final class LeafNode implements Node {
         ArrayList<Token> tokenList = new ArrayList<>();
         tokenList.add(token);
         return tokenList;
+    }
+
+    @Override
+    public List<Node> getChildren(){
+        return null;
+    }
+
+    @Override
+    public boolean isFruitful(){
+        return true;
     }
 
     @Override

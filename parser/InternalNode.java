@@ -1,18 +1,12 @@
 package parser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class InternalNode implements Node{
 
     private final List<Node> children;
     private List<Token> representationList = null;
     private String representationString = null;
-
-    public List<Node> getChildren(){
-        return new ArrayList<>(children);
-    }
 
     private InternalNode(List<Node> children){
         this.children = new ArrayList<>(children);
@@ -31,6 +25,20 @@ public final class InternalNode implements Node{
             }
         }
         return representationList;
+    }
+
+    @Override
+    public List<Node> getChildren(){
+        return new ArrayList<>(children);
+    }
+
+    @Override
+    public boolean isFruitful(){
+        if(!this.getChildren().isEmpty())
+            return true;
+        else{
+            return false;
+        }
     }
 
     @Override

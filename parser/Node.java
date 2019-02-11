@@ -1,9 +1,13 @@
 package parser;
 
-import java.util.List;
+import java.util.*;
 
 public interface Node {
 
     List<Token> toList();
+
+    List<Node> getChildren();
+
+    boolean isFruitful();
 
 }

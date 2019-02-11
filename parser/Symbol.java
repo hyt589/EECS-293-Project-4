@@ -1,6 +1,6 @@
 package parser;
 
-import java.util.List;
+import java.util.*;
 
 interface Symbol {
 
