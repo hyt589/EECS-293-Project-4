@@ -6,40 +6,86 @@ public enum NonTerminalSymbol implements Symbol {
 
     EXPRESSION, EXPRESSION_TAIL, TERM, TERM_TAIL, UNARY, FACTOR;
 
-    private static Map<NonTerminalSymbol, List<SymbolSequence>> productionTable = new HashMap<>();
+    private static HashMap<NonTerminalSymbol, HashMap<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
 
     static {
-        buildTable(productionTable, EXPRESSION, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
+        expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        expression.put(TerminalSymbol.MINUS, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        expression.put(TerminalSymbol.OPEN, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        productions.put(EXPRESSION, expression);
 
-        buildTable(productionTable, EXPRESSION_TAIL, SymbolSequence.build(TerminalSymbol.PLUS, TERM, EXPRESSION_TAIL),
-                SymbolSequence.build(TerminalSymbol.MINUS, TERM, EXPRESSION_TAIL),
-                SymbolSequence.EPSILON);
+        HashMap<TerminalSymbol, SymbolSequence> expressionTail = new HashMap<>();
+        expressionTail.put(TerminalSymbol.PLUS, SymbolSequence.build(TerminalSymbol.PLUS, TERM, EXPRESSION_TAIL));
+        expressionTail.put(TerminalSymbol.MINUS, SymbolSequence.build(TerminalSymbol.MINUS, TERM, EXPRESSION_TAIL));
+        expressionTail.put(null, SymbolSequence.EPSILON);
+        productions.put(EXPRESSION_TAIL, expressionTail);
 
-        buildTable(productionTable, TERM, SymbolSequence.build(UNARY, TERM_TAIL));
+        HashMap<TerminalSymbol, SymbolSequence> term = new HashMap<>();
+        term.put(TerminalSymbol.VARIABLE, SymbolSequence.build(UNARY, TERM_TAIL));
+        term.put(TerminalSymbol.MINUS, SymbolSequence.build(UNARY, TERM_TAIL));
+        term.put(TerminalSymbol.OPEN, SymbolSequence.build(UNARY, TERM_TAIL));
+        productions.put(TERM, term);
 
-        buildTable(productionTable, TERM_TAIL, SymbolSequence.build(TerminalSymbol.TIMES, UNARY, TERM_TAIL),
-                SymbolSequence.build(TerminalSymbol.DIVIDE, UNARY, TERM_TAIL),
-                SymbolSequence.EPSILON);
+        HashMap<TerminalSymbol, SymbolSequence> termTail = new HashMap<>();
+        termTail.put(TerminalSymbol.TIMES, SymbolSequence.build(TerminalSymbol.TIMES, UNARY, TERM_TAIL));
+        termTail.put(TerminalSymbol.DIVIDE, SymbolSequence.build(TerminalSymbol.DIVIDE, UNARY, TERM_TAIL));
+        termTail.put(null, SymbolSequence.EPSILON);
+        productions.put(TERM_TAIL, termTail);
 
-        buildTable(productionTable, UNARY, SymbolSequence.build(TerminalSymbol.MINUS, FACTOR),
-                SymbolSequence.build(FACTOR));
+        HashMap<TerminalSymbol, SymbolSequence> unary = new HashMap<>();
+        unary.put(TerminalSymbol.MINUS, SymbolSequence.build(TerminalSymbol.MINUS, FACTOR));
+        unary.put(TerminalSymbol.VARIABLE, SymbolSequence.build(FACTOR));
+        unary.put(TerminalSymbol.OPEN, SymbolSequence.build(FACTOR));
+        productions.put(UNARY, unary);
 
-        buildTable(productionTable, FACTOR, SymbolSequence.build(TerminalSymbol.OPEN, EXPRESSION, TerminalSymbol.CLOSE),
-                SymbolSequence.build(TerminalSymbol.VARIABLE));
+        HashMap<TerminalSymbol, SymbolSequence> factor = new HashMap<>();
+        factor.put(TerminalSymbol.OPEN, SymbolSequence.build(TerminalSymbol.OPEN, EXPRESSION, TerminalSymbol.CLOSE));
+        factor.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TerminalSymbol.VARIABLE));
+        productions.put(FACTOR, factor);
     }
+
+    /* UNSURE HOW TO ADAPT THESE TO NEW FORMAT
+    private static void buildTable(NonTerminalSymbol nonTerminalSymbol, List<SymbolSequence> sequences) {
+        productions.put(nonTerminalSymbol, sequences);
+    }
+
+    private static void buildTable(NonTerminalSymbol nonTerminalSymbol, SymbolSequence... sequences) {
+        buildTable(nonTerminalSymbol, Arrays.asList(sequences));
+    }
+    */
 
     @Override
     public ParseState parse(List<Token> input) {
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        List<SymbolSequence> productionList = productionTable.get(this);
+        HashMap<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
 
-        for (SymbolSequence production : productionList) {
-            ParseState returnedState = production.match(input);
-            if (returnedState.isSuccess()) {
-                return returnedState;
-            }
+        TerminalSymbol lookAhead;
+        if(!input.isEmpty()){
+            lookAhead = input.get(0).getType();
         }
-        return ParseState.FAILURE;
+        else{
+            lookAhead = null;
+        }
+
+        SymbolSequence production;
+        if(productionList.containsKey(lookAhead)){
+            production = productionList.get(lookAhead);
+        }
+        else if(productionList.containsValue(SymbolSequence.EPSILON)){
+            production = SymbolSequence.EPSILON;
+        }
+        else{
+            return ParseState.FAILURE;
+        }
+
+        ParseState returnedState = production.match(input);
+        if (returnedState.isSuccess()) {
+            return returnedState;
+        }
+        else {
+            return ParseState.FAILURE;
+        }
     }
 
     static final Optional<Node> parseInput(List<Token> input) {
@@ -54,17 +100,6 @@ public enum NonTerminalSymbol implements Symbol {
             returnedNode = Optional.empty();
         }
         return returnedNode;
-    }
-
-    private static Map<NonTerminalSymbol, List<SymbolSequence>> buildTable(Map<NonTerminalSymbol,
-            List<SymbolSequence>> table, NonTerminalSymbol nonTerminalSymbol, List<SymbolSequence> sequences) {
-        table.put(nonTerminalSymbol, sequences);
-        return table;
-    }
-
-    private static Map<NonTerminalSymbol, List<SymbolSequence>> buildTable(Map<NonTerminalSymbol,
-            List<SymbolSequence>> table, NonTerminalSymbol nonTerminalSymbol, SymbolSequence... sequences) {
-        return buildTable(table, nonTerminalSymbol, Arrays.asList(sequences));
     }
 
 }
