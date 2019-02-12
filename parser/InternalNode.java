@@ -10,7 +10,8 @@ public final class InternalNode implements Node{
     private String representationString = null;
 
     private InternalNode(List<Node> children){
-        this.children = new ArrayList<>(children);
+        this.children = new ArrayList<>();
+        Collections.copy(this.children, children);
     }
 
     public static final InternalNode build(List<Node> children) {
@@ -30,7 +31,9 @@ public final class InternalNode implements Node{
 
     @Override
     public List<Node> getChildren(){
-        return new ArrayList<>(children);
+        List<Node> childList = new ArrayList<>();
+        Collections.copy(childList, this.children);
+        return childList;
     }
 
     @Override
@@ -42,6 +45,7 @@ public final class InternalNode implements Node{
         }
     }
 
+    //TODO use String join
     @Override
     public String toString(){
         if (representationString == null){

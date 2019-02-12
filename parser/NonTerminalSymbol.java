@@ -8,6 +8,7 @@ public enum NonTerminalSymbol implements Symbol {
 
     private static HashMap<NonTerminalSymbol, HashMap<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
 
+    //TODO Confirm This
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
         expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
@@ -89,8 +90,8 @@ public enum NonTerminalSymbol implements Symbol {
     }
 
     static final Optional<Node> parseInput(List<Token> input) {
-        Optional<Node> returnedNode;
         Objects.requireNonNull(input, "Input token list cannot be null!");
+        Optional<Node> returnedNode;
         ParseState parseState = EXPRESSION.parse(input);
         boolean successfulParseNoRemainder = parseState.isSuccess() && parseState.hasNoRemainder();
         if (successfulParseNoRemainder) {

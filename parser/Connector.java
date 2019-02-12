@@ -28,7 +28,8 @@ public final class Connector extends AbstractToken {
 
     public static final Connector build(TerminalSymbol connectorType) {
         if (typeMap.containsKey(Objects.requireNonNull(connectorType,"Connector type cannot be null!"))){
-            Function<? super TerminalSymbol, ? extends Connector> connectorConstructor = (Void) -> new Connector(connectorType);
+            Function<? super TerminalSymbol, ? extends Connector> connectorConstructor =
+                    (Void) -> new Connector(connectorType);
             return cache.get(connectorType, connectorConstructor);
         }
         else {

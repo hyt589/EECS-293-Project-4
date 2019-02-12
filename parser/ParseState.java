@@ -23,12 +23,14 @@ final class ParseState {
         return node;
     }
 
-    List<Token> getRemainder(){
-        return new ArrayList<>(remainder);
+    List<Token> getRemainder() {
+        List<Token> remainder = new ArrayList<>();
+        Collections.copy(remainder, this.remainder);
+        return remainder;
     }
 
     final boolean hasNoRemainder(){
-        return remainder.isEmpty();
+        return this.remainder.isEmpty();
     }
 
     public static final ParseState build(Node node, List<Token> remainderList){

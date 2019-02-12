@@ -12,10 +12,10 @@ final class Cache<T, V> {
     }
 
     V get(T key, Function<? super T, ? extends V> constructor) {
-        V value;
         Objects.requireNonNull(key, "Key cannot be null!");
         Objects.requireNonNull(constructor, "Constructor cannot be null!");
 
+        V value;
         if (cache.containsKey(key)) {
             value = cache.get(key);
         }

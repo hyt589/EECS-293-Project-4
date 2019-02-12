@@ -18,17 +18,18 @@ public final class Variable extends AbstractToken {
     }
 
     public final String getRepresentation() {
-        return representation;
+        return this.representation;
     }
 
     public static final Variable build(String representation) {
         Function<? super String, ? extends Variable> variableConstructor = (Void) -> new Variable(representation);
-        return cache.get(Objects.requireNonNull(representation, "Representation string cannot be null!"), variableConstructor);
+        return cache.get(Objects.requireNonNull(representation, "Representation string cannot be null!"),
+                variableConstructor);
     }
 
     @Override
     public String toString() {
-        return representation;
+        return this.representation;
     }
 
 }
