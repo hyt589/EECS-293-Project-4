@@ -46,35 +46,20 @@ public enum NonTerminalSymbol implements Symbol {
         productions.put(FACTOR, factor);
     }
 
-    /* UNSURE HOW TO ADAPT THESE TO NEW FORMAT
-    private static void buildTable(NonTerminalSymbol nonTerminalSymbol, List<SymbolSequence> sequences) {
-        productions.put(nonTerminalSymbol, sequences);
-    }
-
-    private static void buildTable(NonTerminalSymbol nonTerminalSymbol, SymbolSequence... sequences) {
-        buildTable(nonTerminalSymbol, Arrays.asList(sequences));
-    }
-    */
-
     @Override
     public ParseState parse(List<Token> input) {
         Objects.requireNonNull(input, "Input token list cannot be null!");
         HashMap<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
 
-        TerminalSymbol lookAhead;
+        TerminalSymbol lookAhead = null;
         if(!input.isEmpty()){
             lookAhead = input.get(0).getType();
         }
-        else{
-            lookAhead = null;
-        }
+        //else lookAhead stays null
 
         SymbolSequence production;
         if(productionList.containsKey(lookAhead)){
             production = productionList.get(lookAhead);
-        }
-        else if(productionList.containsValue(SymbolSequence.EPSILON)){
-            production = SymbolSequence.EPSILON;
         }
         else{
             return ParseState.FAILURE;
