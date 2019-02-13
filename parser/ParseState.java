@@ -24,8 +24,9 @@ final class ParseState {
     }
 
     List<Token> getRemainder() {
-        List<Token> remainder = new ArrayList<>();
-        Collections.copy(remainder, this.remainder);
+        /*List<Token> remainder = this.remainder;
+        Collections.copy(remainder, this.remainder);*/
+        List<Token> remainder = new ArrayList<>(this.remainder);
         return remainder;
     }
 

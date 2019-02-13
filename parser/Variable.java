@@ -22,7 +22,7 @@ public final class Variable extends AbstractToken {
     }
 
     public static final Variable build(String representation) {
-        Function<? super String, ? extends Variable> variableConstructor = (Void) -> new Variable(representation);
+        Function<? super String, ? extends Variable> variableConstructor = (String rep) -> new Variable(rep);
         return cache.get(Objects.requireNonNull(representation, "Representation string cannot be null!"),
                 variableConstructor);
     }

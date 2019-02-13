@@ -8,8 +8,14 @@ class SymbolSequence {
     static final SymbolSequence EPSILON = new SymbolSequence(new ArrayList<>());
 
     private SymbolSequence(List<Symbol> symbolList){
-        this.production = symbolList;
+        this.production = new ArrayList<>(symbolList);
     }
+
+    /*
+    private SymbolSequence(List<Symbol> symbolList){
+        this.production = symbolList;
+        Collections.copy(this.production, symbolList);
+    }*/
 
     static final SymbolSequence build(List<Symbol> production){
         Objects.requireNonNull(production, "Production symbol list cannot be null!");
@@ -23,8 +29,11 @@ class SymbolSequence {
 
     ParseState match(List<Token> input){
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        List<Token> remainder = new ArrayList<>();
+        /*
+        List<Token> remainder = input;
         Collections.copy(remainder, input);
+        */
+        List<Token> remainder = new ArrayList<>(input);
 
         InternalNode.Builder childBuilder = new InternalNode.Builder();
         for (Symbol symbol : this.production){

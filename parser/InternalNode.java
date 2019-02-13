@@ -9,9 +9,11 @@ public final class InternalNode implements Node{
     private List<Token> representationList = null;
     private String representationString = null;
 
+    //TODO figure out how to use .copy correctly - email Brett
     private InternalNode(List<Node> children){
-        this.children = new ArrayList<>();
-        Collections.copy(this.children, children);
+        this.children = new ArrayList<>(children);
+        /*this.children = children;
+        Collections.copy(this.children, children);*/
     }
 
     public static final InternalNode build(List<Node> children) {
@@ -29,10 +31,11 @@ public final class InternalNode implements Node{
         return representationList;
     }
 
+    //TODO figure out how to use .copy correctly - email Brett
     @Override
     public List<Node> getChildren(){
-        List<Node> childList = new ArrayList<>();
-        Collections.copy(childList, this.children);
+        List<Node> childList = new ArrayList<>(children);
+        //Collections.copy(childList, this.children);
         return childList;
     }
 
@@ -45,20 +48,10 @@ public final class InternalNode implements Node{
         }
     }
 
-    //TODO use String join
     @Override
     public String toString(){
         if (representationString == null){
-            representationString = "[";
-            for (int i = 0; i < children.size(); i++){
-                if (i < children.size() -1) {
-                    representationString += children.get(i).toString() + ",";
-                }
-                else{
-                    representationString += children.get(i).toString();
-                }
-            }
-            representationString += "]";
+            representationString = String.join(",",children.toString());
         }
         return representationString;
     }

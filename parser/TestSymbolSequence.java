@@ -39,13 +39,13 @@ public class TestSymbolSequence {
         assertTrue(testState1.isSuccess());
         assertTrue(testState1.hasNoRemainder());
         assertEquals(testState1.getRemainder(), new ArrayList<>());
-        assertEquals(testState1.getNode().toString(), "[(,x,y,)]");
+        assertEquals(testState1.getNode().toString(), "[(, x, y, )]");
 
         ParseState testState2 = testSequence2.match(tokenList);
         assertTrue(testState2.isSuccess());
         assertTrue(testState2.hasNoRemainder());
         assertEquals(testState2.getRemainder(), new ArrayList<>());
-        assertEquals(testState2.getNode().toString(), "[(,x,y,)]");
+        assertEquals(testState2.getNode().toString(), "[(, x, y, )]");
 
 
 
@@ -79,7 +79,7 @@ public class TestSymbolSequence {
         assertTrue(testState3.isSuccess());
         assertTrue(testState3.hasNoRemainder());
         assertEquals(new ArrayList<>(), testState3.getRemainder());
-        assertEquals("[a,+,b,/,c]", testState3.getNode().toString());
+        assertEquals("[a, +, b, /, c]", testState3.getNode().toString());
         System.out.println(testState3.getNode().toString());
     }
 
