@@ -9,11 +9,8 @@ public final class InternalNode implements Node{
     private List<Token> representationList = null;
     private String representationString = null;
 
-    //TODO figure out how to use .copy correctly - email Brett
     private InternalNode(List<Node> children){
         this.children = new ArrayList<>(children);
-        /*this.children = children;
-        Collections.copy(this.children, children);*/
     }
 
     public static final InternalNode build(List<Node> children) {
@@ -31,11 +28,9 @@ public final class InternalNode implements Node{
         return representationList;
     }
 
-    //TODO figure out how to use .copy correctly - email Brett
     @Override
     public List<Node> getChildren(){
         List<Node> childList = new ArrayList<>(children);
-        //Collections.copy(childList, this.children);
         return childList;
     }
 

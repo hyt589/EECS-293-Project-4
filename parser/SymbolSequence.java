@@ -11,12 +11,6 @@ class SymbolSequence {
         this.production = new ArrayList<>(symbolList);
     }
 
-    /*
-    private SymbolSequence(List<Symbol> symbolList){
-        this.production = symbolList;
-        Collections.copy(this.production, symbolList);
-    }*/
-
     static final SymbolSequence build(List<Symbol> production){
         Objects.requireNonNull(production, "Production symbol list cannot be null!");
         return new SymbolSequence(production);
@@ -29,10 +23,6 @@ class SymbolSequence {
 
     ParseState match(List<Token> input){
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        /*
-        List<Token> remainder = input;
-        Collections.copy(remainder, input);
-        */
         List<Token> remainder = new ArrayList<>(input);
 
         InternalNode.Builder childBuilder = new InternalNode.Builder();

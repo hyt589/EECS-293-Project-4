@@ -8,7 +8,7 @@ public enum NonTerminalSymbol implements Symbol {
 
     private static HashMap<NonTerminalSymbol, HashMap<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
 
-    //TODO Confirm This
+    //TODO Add proper look aheads
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
         expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
