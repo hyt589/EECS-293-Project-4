@@ -10,4 +10,6 @@ public interface Node {
 
     boolean isFruitful();
 
+    //TODO Add is LeafNode?
+
 }

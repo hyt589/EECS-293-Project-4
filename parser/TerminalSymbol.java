@@ -8,8 +8,9 @@ public enum TerminalSymbol implements Symbol {
     @Override
     public ParseState parse(List<Token> input){
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        ParseState returnState;
         boolean nonEmptyMatchedInput = !input.isEmpty() && input.get(0).matches(this);
+        ParseState returnState;
+
         if (nonEmptyMatchedInput){
             returnState = ParseState.build(LeafNode.build(input.get(0)), input.subList(1, input.size()));
         }

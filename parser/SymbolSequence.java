@@ -28,6 +28,7 @@ class SymbolSequence {
         InternalNode.Builder childBuilder = new InternalNode.Builder();
         for (Symbol symbol : this.production){
             ParseState parsedRemainderFromSymbol = symbol.parse(remainder);
+
             if (parsedRemainderFromSymbol.isSuccess()){
                 childBuilder.addChild(parsedRemainderFromSymbol.getNode());
                 remainder = parsedRemainderFromSymbol.getRemainder();

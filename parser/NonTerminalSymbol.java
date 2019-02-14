@@ -10,9 +10,11 @@ public enum NonTerminalSymbol implements Symbol {
 
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
-        expression.put(TerminalSymbol.MINUS, SymbolSequence.build(TERM, EXPRESSION_TAIL));
-        expression.put(TerminalSymbol.OPEN, SymbolSequence.build(TERM, EXPRESSION_TAIL));
-        expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        SymbolSequence termExpressionTail = SymbolSequence.build(TERM, EXPRESSION_TAIL);
+        //TODO somehow use functions to avoid repeated .put calls
+        expression.put(TerminalSymbol.MINUS, termExpressionTail);
+        expression.put(TerminalSymbol.OPEN, termExpressionTail);
+        expression.put(TerminalSymbol.VARIABLE, termExpressionTail);
         productions.put(EXPRESSION, expression);
 
         HashMap<TerminalSymbol, SymbolSequence> expressionTail = new HashMap<>();
@@ -23,9 +25,10 @@ public enum NonTerminalSymbol implements Symbol {
         productions.put(EXPRESSION_TAIL, expressionTail);
 
         HashMap<TerminalSymbol, SymbolSequence> term = new HashMap<>();
-        term.put(TerminalSymbol.MINUS, SymbolSequence.build(UNARY, TERM_TAIL));
-        term.put(TerminalSymbol.OPEN, SymbolSequence.build(UNARY, TERM_TAIL));
-        term.put(TerminalSymbol.VARIABLE, SymbolSequence.build(UNARY, TERM_TAIL));
+        SymbolSequence unaryTermTail = SymbolSequence.build(UNARY, TERM_TAIL);
+        term.put(TerminalSymbol.MINUS, unaryTermTail);
+        term.put(TerminalSymbol.OPEN, unaryTermTail);
+        term.put(TerminalSymbol.VARIABLE, unaryTermTail);
         productions.put(TERM, term);
 
         HashMap<TerminalSymbol, SymbolSequence> termTail = new HashMap<>();
@@ -38,9 +41,10 @@ public enum NonTerminalSymbol implements Symbol {
         productions.put(TERM_TAIL, termTail);
 
         HashMap<TerminalSymbol, SymbolSequence> unary = new HashMap<>();
+        SymbolSequence factorSequence = SymbolSequence.build(FACTOR);
         unary.put(TerminalSymbol.MINUS, SymbolSequence.build(TerminalSymbol.MINUS, FACTOR));
-        unary.put(TerminalSymbol.OPEN, SymbolSequence.build(FACTOR));
-        unary.put(TerminalSymbol.VARIABLE, SymbolSequence.build(FACTOR));
+        unary.put(TerminalSymbol.OPEN, factorSequence);
+        unary.put(TerminalSymbol.VARIABLE, factorSequence);
         productions.put(UNARY, unary);
 
         HashMap<TerminalSymbol, SymbolSequence> factor = new HashMap<>();
@@ -52,14 +56,16 @@ public enum NonTerminalSymbol implements Symbol {
     @Override
     public ParseState parse(List<Token> input) {
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        HashMap<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
 
-        TerminalSymbol lookAhead = null;
+        TerminalSymbol lookAhead;
         if(!input.isEmpty()){
             lookAhead = input.get(0).getType();
         }
-        //else lookAhead stays null
+        else{
+            lookAhead = null;
+        }
 
+        HashMap<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
         SymbolSequence production;
         if(productionList.containsKey(lookAhead)){
             production = productionList.get(lookAhead);
@@ -79,9 +85,11 @@ public enum NonTerminalSymbol implements Symbol {
 
     static final Optional<Node> parseInput(List<Token> input) {
         Objects.requireNonNull(input, "Input token list cannot be null!");
-        Optional<Node> returnedNode;
+
         ParseState parseState = EXPRESSION.parse(input);
         boolean successfulParseNoRemainder = parseState.isSuccess() && parseState.hasNoRemainder();
+        Optional<Node> returnedNode;
+
         if (successfulParseNoRemainder) {
             returnedNode = Optional.of(parseState.getNode());
         }

@@ -21,6 +21,7 @@ public final class InternalNode implements Node{
     public final List<Token> toList(){
         if (representationList == null){
             representationList = new ArrayList<>();
+
             for (Node child : children) {
                 representationList.addAll(child.toList());
             }
@@ -65,15 +66,18 @@ public final class InternalNode implements Node{
 
         private Node simplifyChildren(Node child){
             Builder childBuilder = new Builder();
-            boolean isInternalNode = child.getChildren() != null;
+            boolean isInternalNode = child.getChildren() != null; //TODO Ask Brett about this for clarification on how to fix encapsulation break
+
+            Node returnNode = child;
             if(isInternalNode){
-                childBuilder.children = child.getChildren();
-                childBuilder = childBuilder.simplify();
+                childBuilder.children = returnNode.getChildren();
+                //this is unnecessary as we call simplify in our build: childBuilder = childBuilder.simplify();
+
                 if(childBuilder.children.size() == 1){
-                    child = childBuilder.children.get(0);
+                    returnNode = childBuilder.children.get(0);
                 }
             }
-            return child;
+            return returnNode;
         }
 
         public InternalNode build(){
