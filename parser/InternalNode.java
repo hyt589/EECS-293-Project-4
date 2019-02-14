@@ -43,7 +43,8 @@ public final class InternalNode implements Node{
     @Override
     public Node simplify(){
         Node simplifiedNode = this;
-        if(this.getChildren().size() == 1) {
+
+        if(simplifiedNode.getChildren().size() == 1) {
             Builder childBuilder = new Builder();
             childBuilder.children = simplifiedNode.getChildren();
             simplifiedNode = childBuilder.children.get(0);
