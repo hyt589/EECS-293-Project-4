@@ -33,6 +33,7 @@ public enum NonTerminalSymbol implements Symbol {
         termTail.put(TerminalSymbol.DIVIDE, SymbolSequence.build(TerminalSymbol.DIVIDE, UNARY, TERM_TAIL));
         termTail.put(TerminalSymbol.PLUS, SymbolSequence.EPSILON); //if remainder starts with plus, can only be EPSILON
         termTail.put(TerminalSymbol.MINUS, SymbolSequence.EPSILON); //if remainder starts with minus, can only be EPSILON
+        termTail.put(TerminalSymbol.CLOSE, SymbolSequence.EPSILON); //if remainder starts with close, can only be EPSILON
         termTail.put(null, SymbolSequence.EPSILON);
         productions.put(TERM_TAIL, termTail);
 
