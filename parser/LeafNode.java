@@ -36,6 +36,11 @@ public final class LeafNode implements Node {
     }
 
     @Override
+    public Node simplify(){
+        return this;
+    }
+
+    @Override
     public String toString() {
         return token.toString();
     }

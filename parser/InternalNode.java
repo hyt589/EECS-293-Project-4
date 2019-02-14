@@ -41,6 +41,17 @@ public final class InternalNode implements Node{
     }
 
     @Override
+    public Node simplify(){
+        Node simplifiedNode = this;
+        if(this.getChildren().size() == 1) {
+            Builder childBuilder = new Builder();
+            childBuilder.children = simplifiedNode.getChildren();
+            simplifiedNode = childBuilder.children.get(0);
+        }
+        return simplifiedNode;
+    }
+
+    @Override
     public String toString(){
         if (representationString == null){
             representationString = String.join(",",children.toString());
@@ -59,25 +70,9 @@ public final class InternalNode implements Node{
         public Builder simplify(){
             this.children = this.children.stream()
                     .filter(child -> child.isFruitful())
-                    .map(child -> simplifyChildren(child))
+                    .map(child -> child.simplify())
                     .collect(Collectors.toList());
             return this;
-        }
-
-        private Node simplifyChildren(Node child){
-            Builder childBuilder = new Builder();
-            boolean isInternalNode = child.getChildren() != null; //TODO Ask Brett about this for clarification on how to fix encapsulation break
-
-            Node returnNode = child;
-            if(isInternalNode){
-                childBuilder.children = returnNode.getChildren();
-                //this is unnecessary as we call simplify in our build: childBuilder = childBuilder.simplify();
-
-                if(childBuilder.children.size() == 1){
-                    returnNode = childBuilder.children.get(0);
-                }
-            }
-            return returnNode;
         }
 
         public InternalNode build(){
