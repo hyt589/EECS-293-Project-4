@@ -36,11 +36,7 @@ public final class InternalNode implements Node{
 
     @Override
     public boolean isFruitful(){
-        if(!this.getChildren().isEmpty())
-            return true;
-        else{
-            return false;
-        }
+        return !this.getChildren().isEmpty();
     }
 
     @Override

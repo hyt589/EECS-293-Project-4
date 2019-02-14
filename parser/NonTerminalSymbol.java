@@ -8,36 +8,38 @@ public enum NonTerminalSymbol implements Symbol {
 
     private static HashMap<NonTerminalSymbol, HashMap<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
 
-    //TODO Add proper look aheads
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
-        expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
         expression.put(TerminalSymbol.MINUS, SymbolSequence.build(TERM, EXPRESSION_TAIL));
         expression.put(TerminalSymbol.OPEN, SymbolSequence.build(TERM, EXPRESSION_TAIL));
+        expression.put(TerminalSymbol.VARIABLE, SymbolSequence.build(TERM, EXPRESSION_TAIL));
         productions.put(EXPRESSION, expression);
 
         HashMap<TerminalSymbol, SymbolSequence> expressionTail = new HashMap<>();
         expressionTail.put(TerminalSymbol.PLUS, SymbolSequence.build(TerminalSymbol.PLUS, TERM, EXPRESSION_TAIL));
         expressionTail.put(TerminalSymbol.MINUS, SymbolSequence.build(TerminalSymbol.MINUS, TERM, EXPRESSION_TAIL));
+        expressionTail.put(TerminalSymbol.CLOSE, SymbolSequence.EPSILON); //if remainder starts with close, can only be EPSILON
         expressionTail.put(null, SymbolSequence.EPSILON);
         productions.put(EXPRESSION_TAIL, expressionTail);
 
         HashMap<TerminalSymbol, SymbolSequence> term = new HashMap<>();
-        term.put(TerminalSymbol.VARIABLE, SymbolSequence.build(UNARY, TERM_TAIL));
         term.put(TerminalSymbol.MINUS, SymbolSequence.build(UNARY, TERM_TAIL));
         term.put(TerminalSymbol.OPEN, SymbolSequence.build(UNARY, TERM_TAIL));
+        term.put(TerminalSymbol.VARIABLE, SymbolSequence.build(UNARY, TERM_TAIL));
         productions.put(TERM, term);
 
         HashMap<TerminalSymbol, SymbolSequence> termTail = new HashMap<>();
         termTail.put(TerminalSymbol.TIMES, SymbolSequence.build(TerminalSymbol.TIMES, UNARY, TERM_TAIL));
         termTail.put(TerminalSymbol.DIVIDE, SymbolSequence.build(TerminalSymbol.DIVIDE, UNARY, TERM_TAIL));
+        termTail.put(TerminalSymbol.PLUS, SymbolSequence.EPSILON); //if remainder starts with plus, can only be EPSILON
+        termTail.put(TerminalSymbol.MINUS, SymbolSequence.EPSILON); //if remainder starts with minus, can only be EPSILON
         termTail.put(null, SymbolSequence.EPSILON);
         productions.put(TERM_TAIL, termTail);
 
         HashMap<TerminalSymbol, SymbolSequence> unary = new HashMap<>();
         unary.put(TerminalSymbol.MINUS, SymbolSequence.build(TerminalSymbol.MINUS, FACTOR));
-        unary.put(TerminalSymbol.VARIABLE, SymbolSequence.build(FACTOR));
         unary.put(TerminalSymbol.OPEN, SymbolSequence.build(FACTOR));
+        unary.put(TerminalSymbol.VARIABLE, SymbolSequence.build(FACTOR));
         productions.put(UNARY, unary);
 
         HashMap<TerminalSymbol, SymbolSequence> factor = new HashMap<>();
