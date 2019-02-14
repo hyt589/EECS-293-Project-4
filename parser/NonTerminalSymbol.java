@@ -6,7 +6,7 @@ public enum NonTerminalSymbol implements Symbol {
 
     EXPRESSION, EXPRESSION_TAIL, TERM, TERM_TAIL, UNARY, FACTOR;
 
-    private static HashMap<NonTerminalSymbol, HashMap<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
+    private static Map<NonTerminalSymbol, Map<TerminalSymbol, SymbolSequence>> productions = new HashMap<>();
 
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
@@ -64,7 +64,7 @@ public enum NonTerminalSymbol implements Symbol {
             lookAhead = null;
         }
 
-        HashMap<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
+        Map<TerminalSymbol, SymbolSequence> productionList = productions.get(this);
         SymbolSequence production;
         if(productionList.containsKey(lookAhead)){
             production = productionList.get(lookAhead);
