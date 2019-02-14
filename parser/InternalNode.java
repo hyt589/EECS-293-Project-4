@@ -21,6 +21,7 @@ public final class InternalNode implements Node{
     public final List<Token> toList(){
         if (representationList == null){
             representationList = new ArrayList<>();
+
             for (Node child : children) {
                 representationList.addAll(child.toList());
             }
@@ -37,6 +38,18 @@ public final class InternalNode implements Node{
     @Override
     public boolean isFruitful(){
         return !this.getChildren().isEmpty();
+    }
+
+    @Override
+    public Node simplify(){
+        Node simplifiedNode = this;
+
+        if(simplifiedNode.getChildren().size() == 1) {
+            Builder childBuilder = new Builder();
+            childBuilder.children = simplifiedNode.getChildren();
+            simplifiedNode = childBuilder.children.get(0);
+        }
+        return simplifiedNode;
     }
 
     @Override
@@ -58,22 +71,9 @@ public final class InternalNode implements Node{
         public Builder simplify(){
             this.children = this.children.stream()
                     .filter(child -> child.isFruitful())
-                    .map(child -> simplifyChildren(child))
+                    .map(child -> child.simplify())
                     .collect(Collectors.toList());
             return this;
-        }
-
-        private Node simplifyChildren(Node child){
-            Builder childBuilder = new Builder();
-            boolean isInternalNode = child.getChildren() != null;
-            if(isInternalNode){
-                childBuilder.children = child.getChildren();
-                childBuilder = childBuilder.simplify();
-                if(childBuilder.children.size() == 1){
-                    child = childBuilder.children.get(0);
-                }
-            }
-            return child;
         }
 
         public InternalNode build(){

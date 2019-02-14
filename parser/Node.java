@@ -10,4 +10,6 @@ public interface Node {
 
     boolean isFruitful();
 
+    Node simplify();
+
 }
