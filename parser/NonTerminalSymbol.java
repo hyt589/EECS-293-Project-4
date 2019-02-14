@@ -11,7 +11,6 @@ public enum NonTerminalSymbol implements Symbol {
     static {
         HashMap<TerminalSymbol, SymbolSequence> expression = new HashMap<>();
         SymbolSequence termExpressionTail = SymbolSequence.build(TERM, EXPRESSION_TAIL);
-        //TODO somehow use functions to avoid repeated .put calls
         expression.put(TerminalSymbol.MINUS, termExpressionTail);
         expression.put(TerminalSymbol.OPEN, termExpressionTail);
         expression.put(TerminalSymbol.VARIABLE, termExpressionTail);
